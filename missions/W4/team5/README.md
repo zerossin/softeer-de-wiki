@@ -8,7 +8,7 @@ NYC TLC FHVHV(high volume for-hire, Uber/Lyft/Via/Juno) trip 데이터와 NY주 
 
 ## 분석 이유
 
-W4M2 과제의 질문은 **"이 데이터가 사람이 아니라 자율주행차 데이터라면 어떤 Data Product를 만들 수 있을까"**였다. 이 질문을 바탕으로 다음과 같은 가정을 세웠다.
+W4M2 과제의 질문은 "이 데이터가 사람이 아니라 자율주행차 데이터라면 어떤 Data Product를 만들 수 있을까"였다. 이 질문을 바탕으로 다음과 같은 가정을 세웠다.
 
 ### ① 자율주행차는 전기차일 가능성이 높다
 2026년 기준 상용 로보택시는 대부분 전기차를 기반으로 운영된다. Waymo는 Jaguar I-PACE를([Waymo](https://waymo.com/blog/2023/03/paving-way-toward-fully-electric-ride/)), Zoox는 자체 개발한 전기차를, Cruise는 Chevrolet Bolt EV를, Tesla는 Model Y와 Cybercab을 사용한다.
@@ -54,7 +54,7 @@ TLC 데이터는 [TLC 공식 분류](https://www.nyc.gov/site/tlc/businesses/e-h
 - **Yellow**: 길거리 호출(street hail) 중심 구조라 앱 배차 기반인 로보택시와 다르고 2021~2025년 이용량도 감소 추세라 미선정.
 - **Green**: 마찬가지로 street-hail 기반인 데다 운행 지역이 외곽 자치구로 제한돼 있고 이용량도 감소 추세라 미선정.
 - **FHV**: street hail이 아닌 사전예약(prearranged) 방식으로 배차돼 실시간 앱 매칭 구조가 아니라 미선정.
-- **FHVHV(선정)**: Uber·Lyft 등 실시간 앱 매칭(e-hailing) 구조라 "호출하면 차가 오는" 방식이 로보택시와 가장 유사하고, 2021~2025년 유일하게 성장해 분석 기간(2025-07~2025-12) 기준 1.2억+ trip 규모를 보인다.
+- **FHVHV(선정)**: Uber·Lyft 등 실시간 앱 매칭(e-hailing) 구조라 "호출하면 차가 오는" 방식이 로보택시와 가장 유사하고, 2021\~2025년 유일하게 성장해 분석 기간(2025-07\~2025-12) 기준 1.2억+ trip 규모를 보인다.
 
 ![Monthly Taxi Usage Trend](output1.png)
 *2021~2025 월별 서비스 유형별 trip 수 추이. FHVHV(high volume for-hire)가 Yellow/Green 택시를 압도하며 사실상 유일하게 성장하는 추이라, 로보택시 수요의 proxy로 FHVHV를 택한 근거가 된다.*
