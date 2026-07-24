@@ -1,4 +1,4 @@
-# 자율주행 택시 충전 인프라 입지 분석
+# 자율주행택시 충전소 입지 제안
 
 NYC TLC FHVHV trip 데이터와 NY주 EV 충전소 데이터를 결합해 서비스를 자율주행으로 운영한다면 충전 인프라를 어디에 얼마나 갖춰야 수익이 나는지를 제안하는 데이터 프로덕트다.
 
@@ -6,7 +6,9 @@ NYC TLC FHVHV trip 데이터와 NY주 EV 충전소 데이터를 결합해 서비
 
 ## 분석 이유
 
-W4M2 과제의 질문은 "이 데이터가 사람이 아니라 자율주행차 데이터라면 어떤 Data Product를 만들 수 있을까"였다. 이 질문을 바탕으로 다음과 같은 가정을 세웠다.
+W4M2 과제의 질문은 "이 데이터가 사람이 아니라 자율주행차 데이터라면 어떤 Data Product를 만들 수 있을까"였다.
+
+이를 현실 문제로 좁히면 로보택시 충전 인프라 사업자의 입지 결정 문제가 된다. NYC FHVHV trip 데이터를 로보택시 수요 데이터로 놓고, 어느 지역에 충전 인프라를 먼저 지어야 하는지를 분석한다.
 
 ### ① 자율주행차는 전기차일 가능성이 높다
 2026년 기준 상용 로보택시는 대부분 전기차를 기반으로 운영된다. Waymo는 Jaguar I-PACE를([Waymo](https://waymo.com/blog/2023/03/paving-way-toward-fully-electric-ride/)), Zoox는 자체 개발한 전기차를, Cruise는 Chevrolet Bolt EV를, Tesla는 Model Y와 Cybercab을 사용한다.
