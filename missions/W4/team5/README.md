@@ -1,4 +1,4 @@
-# NYC Robotaxi 수요 & EV 충전 인프라 분석 (`w4m2.ipynb`)
+# NYC Robotaxi 수요 & EV 충전 인프라 분석
 
 NYC TLC FHVHV trip 데이터와 NY주 EV 충전소 데이터를 결합해 서비스를 자율주행으로 운영한다면 충전 인프라를 어디에 얼마나 갖춰야 수익이 나는지를 제안하는 데이터 프로덕트다.
 
