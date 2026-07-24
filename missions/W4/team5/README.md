@@ -6,11 +6,36 @@ NYC TLC FHVHV(high volume for-hire, Uber/Lyft/Via/Juno) trip 데이터와 NY주 
 
 ---
 
-## 왜 이 분석인가
+## 분석 이유
 
-- NYC에는 실제 로보택시 서비스가 없다. 대신 앱 배차 기반 high volume for-hire 서비스인 **FHVHV**를 로보택시 수요의 proxy로 삼는다.
-- TLC 데이터는 2017년부터 정확한 GPS 좌표 대신 **263개 taxi zone** ID만 제공한다. 모든 분석은 zone(폴리곤) 단위 해상도다.
-- "수요가 많다"는 정성적 판단을 넘어, **전력량(kWh) 물리 모델**과 **설치·토지 비용 모델**을 결합해 "정확히 몇 대가 필요하고, 얼마가 들고, 어디부터 투자해야 남는 장사인지"까지 정량화한다.
+W4M2 과제 질문은 "이 데이터가 사람이 아니라 자율주행차 데이터라면 어떤 Data Product를 만들 수 있을까"였다. 여기서 다음 가정이 순서대로 이어진다.
+
+### ① 자율주행차 → 전기차일 가능성이 높다
+2026년 기준 로보택시 플랫폼은 예외 없이 전기차 기반이다 — Waymo는 2023년 전체 플릿을 Jaguar I-PACE로 전동화했고([Waymo](https://waymo.com/blog/2023/03/paving-way-toward-fully-electric-ride/)) Zoox는 133kWh 전용 EV, Cruise는 Chevrolet Bolt EV, Tesla도 Model Y·Cybercab(EV)을 쓴다. 이 분석은 Waymo의 **Jaguar I-PACE**를 기준 차종으로 삼았다.
+
+### ② 전기차 플릿 → 충전 인프라가 병목이 된다
+사람이 모는 택시는 기사가 알아서 충전하지만 AV 플릿은 관제가 모든 차량의 충전 스케줄을 직접 관리해야 한다. Stanford 연구팀은 샌프란시스코 사례로 충전소 입지·배차를 동시에 최적화하는 모델을 제시했고([arXiv:2107.00165](https://arxiv.org/abs/2107.00165)) CPUC 규제 데이터 분석에 따르면 Waymo의 공차운행(deadheading) 비율은 2025년 중반 이후로도 43~45%에 머물러 있다([Findings, 2026](https://findingspress.org/article/161870-millions-of-trips-waymo-empty-miles-california-s-first-thousand-days-of-commercial-robotaxi-service)). 충전소가 없는 zone에 차를 보내면 빈 차로 다른 zone까지 이동(deadhead)해야 해 운영비 증가와 서비스 공백으로 이어진다.
+
+### ③ 그래서 Terawatt Infrastructure를 타겟으로 잡았다
+로보택시 충전은 실제로 세 주체가 나눠 맡는다 — ⓐ Waymo처럼 운영사가 직접 운영하는 depot, ⓑ B2B로 운영사에 충전 인프라를 공급하는 업체, ⓒ Uber처럼 플랫폼이 직접 투자하는 depot. 이 분석의 타겟 고객은 ⓑ에 해당하는 **Terawatt Infrastructure**다. Terawatt는 최근 3억 달러 부채 조달로 Waymo향 depot(LA 잉글우드)을 확장 중이고([Bloomberg](https://www.bloomberg.com/news/articles/2026-06-24/waymo-charging-partner-terawatt-raises-up-to-300-million-in-debt)) Uber도 휴스턴에 4MW·충전기 40기 규모 depot을 짓는 등([TechCrunch](https://techcrunch.com/2026/06/17/uber-will-bring-its-premium-robotaxi-service-to-houston-in-2027/)) 세 주체 모두 실제로 투자를 집행하고 있다.
+
+Terawatt가 로보택시 운영사와 depot 공급 계약을 맺기 전에 "어디에 얼마나 충전소를 지어야 수익이 나는가"를 먼저 계산해두면 선제적으로 투자 우선순위를 세울 수 있다. Uber처럼 앱 기반 실시간 배차(e-hailing) 구조로 직접 충전 투자에 나서는 사례는 FHVHV(앱 배차 구조)를 자율주행 수요 proxy로 고른 근거와도 맞아떨어진다.
+
+### 이 분석이 답하려는 질문
+**"Terawatt Infrastructure가 로보택시 시대를 대비한다면 어디에 먼저 충전 인프라를 지어야 사업이 성립하는가?"**
+
+FHVHV trip 데이터로 zone별 수요를, NY주 공식 EV 충전소 데이터로 현재 공급을, I-PACE 전비 모델로 실제 충전 수요량(kWh)을 계산해 "수요는 많은데 충전소가 없는 zone" → "ROI가 검증되는 zone" 순으로 투자 우선순위를 도출한다.
+
+---
+
+## 차종 선정 이유
+
+TLC 데이터는 [TLC 공식 분류](https://www.nyc.gov/site/tlc/businesses/e-hail-providers.page) 기준 Yellow·Green·FHV·FHVHV 4개 서비스 유형으로 나뉜다. 배차 구조와 이용 추이를 기준으로 자율주행 수요의 proxy를 좁혔다.
+
+- **Yellow**: 길거리 호출(street hail) 중심 구조라 앱 배차 기반인 로보택시와 다르고 2021~2025년 이용량도 감소 추세라 미선정.
+- **Green**: 마찬가지로 street-hail 기반인 데다 운행 지역이 외곽 자치구로 제한돼 있고 이용량도 감소 추세라 미선정.
+- **FHV**: street hail이 아닌 사전예약(prearranged) 방식으로 배차돼 실시간 앱 매칭 구조가 아니라 미선정.
+- **FHVHV(선정)**: Uber·Lyft 등 실시간 앱 매칭(e-hailing) 구조라 "호출하면 차가 오는" 방식이 로보택시와 가장 유사하고, 2021~2025년 유일하게 성장해 분석 기간(2025-07~2025-12) 기준 1.2억+ trip 규모를 보인다.
 
 ![Monthly Taxi Usage Trend](output1.png)
 *2021~2025 월별 서비스 유형별 trip 수 추이. FHVHV(high volume for-hire)가 Yellow/Green 택시를 압도하며 사실상 유일하게 성장하는 추이라, 로보택시 수요의 proxy로 FHVHV를 택한 근거가 된다.*
